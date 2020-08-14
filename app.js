@@ -3,6 +3,7 @@ var app = express();
 const bodyParser = require('body-parser');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
@@ -97,13 +98,35 @@ app.get('/:boardId', function (req, res) {
 // });
 
 io.sockets.on('connection', function (socket) {
-     socket.on('mousemove', function(data) {
-        socket.id = data.id;
-        io.emit('moving', data);
-     });
-     socket.on('disconnect', function() {
-         socket.broadcast.emit('left', socket.id);
-     });
+    console.log("a user has connected")
+
+    socket.on('saveData', (id, data) => {
+        fs.writeFile("./db/" + id + ".txt", data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+        });
+    });
+
+    socket.on('join-room', (id) => {
+        console.log(id);
+        fs.readFile("./db/" + id + ".txt",'utf8', function (err, data) {
+            if (err) {
+                socket.broadcast.emit('err');
+                console.log(err);
+            }
+            socket.emit('joined-room', data);
+        });
+    });
+
+    socket.on('drawing', (data) => {
+        socket.broadcast.emit('elseDrawing', data);
+    })
+
+    socket.on('disconnect',() => {
+        socket.broadcast.emit('left', socket.id);
+    });
 });
 
 server.listen(process.env.PORT, () => {

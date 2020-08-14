@@ -1,5 +1,6 @@
 
 $(function(){
+    const socket = io('/');
     var canvas = $('#board');
     var ctx = canvas[0].getContext('2d');
     var line_color = $('#line_color');
@@ -39,8 +40,6 @@ $(function(){
     //         ctx.drawImage(image, 0, 0)
     //     }
     // })
-
-	var socket = io.connect();
 
 	// socket.on('moving', function (data) {
     //     // not current user and new? create a cursor
@@ -104,6 +103,7 @@ $(function(){
     // not drawing anymore
 	canvas.on('mouseup mouseleave',function(){
         cDrawing = false;
+        socket.emit('saveData', BOARD_ID, canvas[0].toDataURL());
     });
     
     canvas.on('touchend',function(){
@@ -115,14 +115,16 @@ $(function(){
 	canvas.on('mousemove',function(e){
         var cPos = {x: e.pageX-286, y: e.pageY-51 + $('#canvas_container').scrollTop()};
 		if($.now() - cLastEmit > 30){
-			onMoving({
+            d = {
 				'x': cPos.x,
 				'y': cPos.y,
 				'drawing': cDrawing,
 				'id': id,
                 'color': cColor,
                 'lineWidth': cLineWidth
-			});
+			}
+            onMoving(d);
+            socket.emit('drawing', d);
 			cLastEmit = $.now();
 		}
     });
@@ -140,14 +142,16 @@ $(function(){
 
         var cPos = {x: touch.pageX-20, y: touch.pageY-70 + $('#canvas_container').scrollTop()};
 		if($.now() - cLastEmit > 30){
-			onMoving({
+            d = {
 				'x': cPos.x,
 				'y': cPos.y,
 				'drawing': cDrawing,
 				'id': id,
                 'color': cColor,
                 'lineWidth': cLineWidth
-			});
+			}
+            onMoving(d);
+            socket.emit('drawing', d);
 			cLastEmit = $.now();
         }
         touch_control += 1;
@@ -227,6 +231,22 @@ $(function(){
 
     scroll_options.change(function() {
         scroll = $('input[name = scroll]:checked').val();
+    })
+
+    //ROOM FUNCTIONS
+    socket.emit('join-room', BOARD_ID);
+
+    socket.on('joined-room', (data) => {
+        console.log("joined room");
+        var img = new Image;
+        img.src = data;
+        img.onload = function(){
+            ctx.drawImage(img,0,0); 
+        };
+    })
+
+    socket.on('elseDrawing', (data) => {
+        onMoving(data);
     })
 
 });

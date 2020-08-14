@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8" />
+		<title>Node.js Whiteboard</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/styles.css"/>
+		<script>
+			const BOARD_ID = "<%= boardId %>"
+		</script>
+    </head>
+    
+    <body>
+		<div id="cursors">
+	    	
+		</div>
+
+		<div class="mt-2" style="text-align: center;">
+			<h3 class="mb-2">Whiteboard</h3>
+			<div class="mx-lg-auto mx-3 p-0" id="canvas_container" style="max-width: 1000px; overflow-y: scroll;">
+				<canvas class="mx-auto" id="board" width="945" height="700">
+					The browser has to support JS canvas to use this whiteboard.
+				</canvas>
+				<div class="d-flex">
+					<button class="btn-success mx-auto my-2 p-2" id="increase">Increase Canvas</button>
+				</div>
+			</div>
+			<div id="options" style="width: 900px;" class="mx-lg-auto mx-3 d-flex justify-content-between mt-2">
+				<div>
+					Color: 
+					<select name="color" id="line_color">
+						<option value="#000">Black</option>
+						<option value="#0c95f0">Blue</option>
+						<option value="#f00c0c">Red</option>
+						<option value="#34e02b">Green</option>
+						<option value="#eded28">Yellow</option>
+						<option value="#f274e6">Pink</option>
+					</select>
+				</div>
+				<div>
+					Line Width: 
+					<select name="width" id="line_width">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+					</select>
+				</div>
+				<div>
+					Mode: 
+					<select name="mode" id="draw_mode">
+						<option value="pen">pen</option>
+						<option value="eraser">eraser</option>
+					</select>
+				</div>
+				<div class="d-flex justify-content-between" id="scroll_options">
+					<label><input type="radio" name="scroll" value="draw" checked> Draw</label> 
+					<label><input class="ml-3" type="radio" name="scroll" value="scroll"> Scroll</label>
+				</div>
+				<!-- <div>
+					<button class="btn btn-primary btn-sm p-1" id="save_btn">Save</button>
+				</div> -->
+			</div>
+		</div>
+		        
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/index.js"></script>
+        
+    </body>
+</html>

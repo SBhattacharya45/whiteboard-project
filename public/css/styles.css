@@ -1,0 +1,63 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+html{
+	background-color: #fff;
+	overflow:hidden;
+}
+
+body{
+	color:#444;
+}
+
+#cursors{
+        position:relative;
+}
+
+#cursors .cursor{
+    position:absolute;
+    width:15px;
+    height:22px;
+    background:url('../img/pointer.png') no-repeat -4px 0;
+}
+
+#canvas_container {
+    overflow-y: scroll;
+    border: 2px solid #000;
+}
+
+#increase {
+    border: 0px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+@media only screen and (max-width: 992px) {
+    #canvas_container {
+        max-height: 1200px;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    #options {
+        font-size: 1.8rem;
+    }
+    #options button {
+        font-size: 1.4rem;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    #canvas_container {
+        max-height: 500px;
+    }
+
+    #scroll_options {
+        display: none !important;
+    }
+}
+

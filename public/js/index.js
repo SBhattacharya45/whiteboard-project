@@ -249,4 +249,17 @@ $(function(){
         onMoving(data);
     })
 
+    window.addEventListener("beforeunload", function(event) {
+        if(confirm("Press a button")) {
+            console.log(hello);
+        }
+        else {
+            event.preventDefault();
+        }
+    });
+
+    window.onunload = () => {
+        socket.emit('left-room', BOARD_ID);
+    }
+
 });

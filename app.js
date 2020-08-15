@@ -97,6 +97,8 @@ app.get('/:boardId', function (req, res) {
 //     res.status(200).render('index', {admin: false});
 // });
 
+
+
 io.sockets.on('connection', function (socket) {
     console.log("a user has connected")
 
@@ -105,12 +107,19 @@ io.sockets.on('connection', function (socket) {
             if(err) {
                 return console.log(err);
             }
-            console.log("The file was saved!");
         });
     });
 
     socket.on('join-room', (id) => {
-        console.log(id);
+        console.log("New user joined the room");
+        socket.join(id);
+        io.of('/').in(id).clients(function(error,clients){
+            if(error){
+                console.log(error);
+            }
+            console.log(clients.length);
+
+        });
         fs.readFile("./db/" + id + ".txt",'utf8', function (err, data) {
             if (err) {
                 socket.broadcast.emit('err');
@@ -124,8 +133,29 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit('elseDrawing', data);
     })
 
+    socket.on('left-room', (id) => {
+        socket.leave(id);
+        io.of('/').in(id).clients(function(error,clients){
+            if(error){
+                console.log(error);
+            }
+            console.log(clients.length);
+            if(clients.length == 0) {
+                fs.unlink("./db/" + id + ".txt", (err) => {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log("cleared db");
+                    }
+                })
+            }
+
+        });
+        console.log("User has left the room");
+    })
+
     socket.on('disconnect',() => {
-        socket.broadcast.emit('left', socket.id);
+        console.log('Someone disconnected');
     });
 });
 

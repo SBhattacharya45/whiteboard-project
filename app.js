@@ -108,6 +108,7 @@ io.sockets.on('connection', function (socket) {
                 return console.log(err);
             }
         });
+        console.log('saved data');
     });
 
     socket.on('join-room', (id) => {
@@ -117,15 +118,15 @@ io.sockets.on('connection', function (socket) {
             if(error){
                 console.log(error);
             }
-            console.log(clients.length);
-
-        });
-        fs.readFile("./db/" + id + ".txt",'utf8', function (err, data) {
-            if (err) {
-                socket.broadcast.emit('err');
-                console.log(err);
+            if(clients.length > 1) {
+                fs.readFile("./db/" + id + ".txt",'utf8', function (err, data) {
+                    if (err) {
+                        socket.broadcast.emit('err');
+                        console.log(err);
+                    }
+                    socket.emit('joined-room', data);
+                });
             }
-            socket.emit('joined-room', data);
         });
     });
 

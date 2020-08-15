@@ -250,12 +250,8 @@ $(function(){
     })
 
     window.addEventListener("beforeunload", function(event) {
-        if(confirm("Press a button")) {
-            console.log(hello);
-        }
-        else {
-            event.preventDefault();
-        }
+        event.preventDefault();
+        event.returnValue = ''
     });
 
     window.onunload = () => {

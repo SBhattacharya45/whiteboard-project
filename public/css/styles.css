@@ -9,23 +9,24 @@ html{
 }
 
 body{
-	color:#444;
-}
-
-#cursors{
-        position:relative;
-}
-
-#cursors .cursor{
-    position:absolute;
-    width:15px;
-    height:22px;
-    background:url('../img/pointer.png') no-repeat -4px 0;
+    color:white;
+    font-family: 'Montserrat', sans-serif;
+    background: #56ab2f; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #56ab2f, #88b94b); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #56ab2f, #88b94b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 #canvas_container {
     overflow-y: scroll;
-    border: 2px solid #000;
+}
+
+canvas {
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 
 #increase {
@@ -53,11 +54,29 @@ body{
 
 @media only screen and (min-width: 992px) {
     #canvas_container {
-        max-height: 500px;
+        max-height: 700px;
     }
 
     #scroll_options {
         display: none !important;
     }
 }
+
+#main_container {
+    background: #56ab2f;
+    background: -webkit-linear-gradient(to top, #56ab2f, #a8e063);
+    background: linear-gradient(to top, #56ab2f, #a8e063); 
+    padding-bottom: 15px;
+    padding-top: 15px;
+    height: 100%;
+}
+
+select {
+    border-radius: 5px;
+    border: 1px solid grey;
+    background-color: rgba(238, 238, 238, 0.514);
+    color: #333;
+}
+
+
 

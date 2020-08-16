@@ -42,6 +42,7 @@ io.sockets.on('connection', function (socket) {
     })
 
     socket.on('disconnect',() => {
+        socket.broadcast.emit('reduce-count');
         console.log('Someone disconnected');
     });
 });

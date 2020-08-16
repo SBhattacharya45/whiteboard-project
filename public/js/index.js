@@ -51,7 +51,7 @@ $(function(){
 
 		// Is the user drawing?
 		if(data.drawing && clients[data.id]){
-            draw(clients[data.id], data, data.color, data.lineWidth);
+            draw(clients[data.id], data, data.color, data.lineWidth, data.mode);
 		}
 
 		// Save the last data state
@@ -88,15 +88,16 @@ $(function(){
 
     // send the current state to the server if the time difference from last emit is big enough
 	canvas.on('mousemove',function(e){
-        var cPos = {x: e.pageX-286, y: e.pageY-51 + $('#canvas_container').scrollTop()};
+        var cPos = {x: e.pageX-295, y: e.pageY-81 + $('#canvas_container').scrollTop()};
 		if($.now() - cLastEmit > 30){
             d = {
-				'x': cPos.x,
-				'y': cPos.y,
-				'drawing': cDrawing,
-				'id': id,
+                'x': cPos.x,
+                'y': cPos.y,
+                'drawing': cDrawing,
+                'id': id,
                 'color': cColor,
-                'lineWidth': cLineWidth
+                'lineWidth': cLineWidth,
+                'mode': mode
 			}
             onMoving(d);
             socket.emit('drawing', d);
@@ -123,7 +124,8 @@ $(function(){
 				'drawing': cDrawing,
 				'id': id,
                 'color': cColor,
-                'lineWidth': cLineWidth
+                'lineWidth': cLineWidth,
+                'mode': mode
 			}
             onMoving(d);
             socket.emit('drawing', d);
@@ -133,7 +135,7 @@ $(function(){
 	});
 
 
-	function draw(from, to, color, w){
+	function draw(from, to, color, w, mode){
         ctx.strokeStyle = color;
         ctx.lineWidth = w;
         if(mode === 'pen') {
@@ -164,30 +166,6 @@ $(function(){
         mode = draw_mode.val();
     });
 
-    inc_btn.on('click', function() {
-        ctx.canvas.height += 1200;
-
-        fetch('/saveHeight', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({data: ctx.canvas.height})
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-
-        fetch('/load')
-        .then(res => res.json())
-        .then(json => {
-            image = new Image;
-            image.src = json.data;
-            image.onload = function(){
-                ctx.drawImage(image, 0, 0)
-            }
-        })
-    });
-
     scroll_options.change(function() {
         scroll = $('input[name = scroll]:checked').val();
     })
@@ -199,6 +177,8 @@ $(function(){
 
     socket.on('joined-room', (id) => {
         console.log('User ' + id + " has joined the room");
+        users = users + 1;
+        document.getElementById('user_count').innerHTML = users;
         var conn = peer.connect(id);
         conn.on('open', function(){
             conn.send(canvas[0].toDataURL());
@@ -206,6 +186,8 @@ $(function(){
     })
 
     peer.on('connection', function(conn) {
+        users = users + 1;
+        document.getElementById('user_count').innerHTML = users;
         conn.on('data', function(data){
             var img = new Image;
             img.src = data;
@@ -221,6 +203,11 @@ $(function(){
 
     socket.on('elseDrawing', (data) => {
         onMoving(data);
+    })
+
+    socket.on('reduce-count', () => {
+        users = users - 1;
+        document.getElementById('user_count').innerHTML = users;
     })
 
 });

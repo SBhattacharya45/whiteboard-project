@@ -1,9 +1,16 @@
 $(function(){
     const socket = io('/');
+    //Config for localhost
+    // var peer = new Peer(undefined, {
+    //     host: '/',
+    //     path: '/peerjs',
+    //     port: PORT
+    // })
+
     var peer = new Peer(undefined, {
         secure: true, 
-        host: HOST, 
-        port: PORT,
+        host: 'white-board-project.herokuapp.com', 
+        port: 443,
         path: '/peerjs'
     })
 

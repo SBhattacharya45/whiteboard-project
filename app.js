@@ -40,12 +40,18 @@ io.sockets.on('connection', function (socket) {
         socket.to(board_id).broadcast.emit('joined-room', user_id);
     });
 
-    socket.on('drawing', (data) => {
-        socket.broadcast.emit('elseDrawing', data);
+    socket.on('drawing', (data, board_id) => {
+        socket.to(board_id).broadcast.emit('elseDrawing', data);
+    })
+
+    socket.on('check-count', (board_id) => {
+        if(io.sockets.adapter.rooms[board_id]){
+            socket.emit('set-count', io.sockets.adapter.rooms[board_id].length);
+        }
     })
 
     socket.on('disconnect',() => {
-        socket.broadcast.emit('reduce-count');
+        socket.broadcast.emit('check-user-count');
         console.log('Someone disconnected');
     });
 });

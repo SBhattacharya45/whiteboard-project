@@ -100,7 +100,7 @@ $(function(){
                 'mode': mode
 			}
             onMoving(d);
-            socket.emit('drawing', d);
+            socket.emit('drawing', d, BOARD_ID);
 			cLastEmit = $.now();
 		}
     });
@@ -128,7 +128,7 @@ $(function(){
                 'mode': mode
 			}
             onMoving(d);
-            socket.emit('drawing', d);
+            socket.emit('drawing', d, BOARD_ID);
 			cLastEmit = $.now();
         }
         touch_control += 1;
@@ -210,8 +210,13 @@ $(function(){
         onMoving(data);
     })
 
-    socket.on('reduce-count', () => {
-        users = users - 1;
+    socket.on('check-user-count', () => {
+        socket.emit('check-count', BOARD_ID);
+    })
+
+    socket.on('set-count', (count) => {
+        console.log(count);
+        users = count;
         document.getElementById('user_count').innerHTML = users;
     })
 

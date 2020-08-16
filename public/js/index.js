@@ -175,6 +175,10 @@ $(function(){
         socket.emit('join-room', BOARD_ID, id);
     })
 
+    socket.on('stop-loader', () => {
+        document.getElementById('loader').style.display = 'none';
+    })
+
     socket.on('joined-room', (id) => {
         console.log('User ' + id + " has joined the room");
         users = users + 1;
@@ -195,6 +199,7 @@ $(function(){
                 ctx.drawImage(img,0,0); 
             };
         });
+        document.getElementById('loader').style.display = 'none';
     });
 
     peer.on('error', function(err) {

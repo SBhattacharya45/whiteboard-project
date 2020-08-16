@@ -29,11 +29,14 @@ app.get('/:boardId', function (req, res) {
 });
 
 io.sockets.on('connection', function (socket) {
-    console.log("a user has connected")
+    console.log("a user has connected");
 
     socket.on('join-room', (board_id, user_id) => {
         console.log('someone joined the room');
         socket.join(board_id);
+        if(io.sockets.adapter.rooms[board_id].length == 1){
+            io.in(board_id).emit('stop-loader');
+        }
         socket.to(board_id).broadcast.emit('joined-room', user_id);
     });
 

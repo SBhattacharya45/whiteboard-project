@@ -5,8 +5,14 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const { ExpressPeerServer } = require('peer');
 require('dotenv').config();
-
+const peerServer = ExpressPeerServer(server, {
+    debug: true,
+    path: '/'
+  });
+   
+app.use('/peerjs', peerServer);
 app.set("view engine", "ejs");
 app.use(bodyParser.json({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
@@ -14,11 +20,8 @@ app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 var debug_log = require('debug')('whiteboard:log');
 var debug_error = require('debug')('whiteboard:error');
 
-// set static folder
 
 app.use(express.static(__dirname + '/public'));
-
-
 
 app.get('/', (req, res) => {
     res.redirect(`/${uuidv4()}`);
@@ -102,57 +105,22 @@ app.get('/:boardId', function (req, res) {
 io.sockets.on('connection', function (socket) {
     console.log("a user has connected")
 
-    socket.on('saveData', (id, data) => {
-        fs.writeFile("./db/" + id + ".txt", data, function(err) {
-            if(err) {
-                return console.log(err);
-            }
-        });
-        console.log('saved data');
-    });
+    // socket.on('saveData', (id, data) => {
+    //     fs.writeFile("./db/" + id + ".txt", data, function(err) {
+    //         if(err) {
+    //             return console.log(err);
+    //         }
+    //     });
+    //     console.log('saved data');
+    // });
 
-    socket.on('join-room', (id) => {
-        console.log("New user joined the room");
-        socket.join(id);
-        io.of('/').in(id).clients(function(error,clients){
-            if(error){
-                console.log(error);
-            }
-            if(clients.length > 1) {
-                fs.readFile("./db/" + id + ".txt",'utf8', function (err, data) {
-                    if (err) {
-                        socket.broadcast.emit('err');
-                        console.log(err);
-                    }
-                    socket.emit('joined-room', data);
-                });
-            }
-        });
+    socket.on('join-room', (board_id, user_id) => {
+        socket.join(board_id);
+        socket.to(board_id).broadcast.emit('joined-room', user_id);
     });
 
     socket.on('drawing', (data) => {
         socket.broadcast.emit('elseDrawing', data);
-    })
-
-    socket.on('left-room', (id) => {
-        socket.leave(id);
-        io.of('/').in(id).clients(function(error,clients){
-            if(error){
-                console.log(error);
-            }
-            console.log(clients.length);
-            if(clients.length == 0) {
-                fs.unlink("./db/" + id + ".txt", (err) => {
-                    if(err) {
-                        console.log(err);
-                    } else {
-                        console.log("cleared db");
-                    }
-                })
-            }
-
-        });
-        console.log("User has left the room");
     })
 
     socket.on('disconnect',() => {

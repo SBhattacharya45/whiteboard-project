@@ -1,6 +1,11 @@
-
 $(function(){
     const socket = io('/');
+    var peer = new Peer(undefined, {
+        host: '/',
+        path: '/peerjs',
+        port: '3001'
+    })
+
     var canvas = $('#board');
     var ctx = canvas[0].getContext('2d');
     var line_color = $('#line_color');
@@ -103,7 +108,6 @@ $(function(){
     // not drawing anymore
 	canvas.on('mouseup mouseleave',function(){
         cDrawing = false;
-        socket.emit('saveData', BOARD_ID, canvas[0].toDataURL());
     });
     
     canvas.on('touchend',function(){
@@ -233,29 +237,31 @@ $(function(){
         scroll = $('input[name = scroll]:checked').val();
     })
 
-    //ROOM FUNCTIONS
-    socket.emit('join-room', BOARD_ID);
-
-    socket.on('joined-room', (data) => {
-        console.log("joined room");
-        var img = new Image;
-        img.src = data;
-        img.onload = function(){
-            ctx.drawImage(img,0,0); 
-        };
+    //Room Functions
+    peer.on('open', id => {
+        socket.emit('join-room', BOARD_ID, id);
     })
+
+    socket.on('joined-room', (id) => {
+        console.log('User ' + id + " has joined the room");
+        var conn = peer.connect(id);
+        conn.on('open', function(){
+            conn.send(canvas[0].toDataURL());
+        });
+    })
+
+    peer.on('connection', function(conn) {
+        conn.on('data', function(data){
+            var img = new Image;
+            img.src = data;
+            img.onload = function(){
+                ctx.drawImage(img,0,0); 
+            };
+        });
+    });
 
     socket.on('elseDrawing', (data) => {
         onMoving(data);
     })
-
-    window.addEventListener("beforeunload", function(event) {
-        event.preventDefault();
-        event.returnValue = ''
-    });
-
-    window.onunload = () => {
-        socket.emit('left-room', BOARD_ID);
-    }
 
 });

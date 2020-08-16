@@ -115,6 +115,7 @@ io.sockets.on('connection', function (socket) {
     // });
 
     socket.on('join-room', (board_id, user_id) => {
+        console.log('someone joined the room');
         socket.join(board_id);
         socket.to(board_id).broadcast.emit('joined-room', user_id);
     });

@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/:boardId', function (req, res) {
-	res.render('index', {boardId: req.params.boardId});
+	res.render('index', {boardId: req.params.boardId, port: process.env.PORT});
 });
 
 

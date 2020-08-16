@@ -3,7 +3,7 @@ $(function(){
     var peer = new Peer(undefined, {
         host: '/',
         path: '/peerjs',
-        port: '3001'
+        port: PORT
     })
 
     var canvas = $('#board');

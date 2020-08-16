@@ -37,43 +37,6 @@ $(function(){
 	var clients = {};
     var cursors = {};
     var touch_control;
-
-    // fetch('/getHeight')
-    // .then(res => res.json())
-    // .then(json => {
-    //     ctx.canvas.height = json.data;
-    // })
-    
-    // fetch('/load')
-    // .then(res => res.json())
-    // .then(json => {
-    //     image = new Image;
-    //     image.src = json.data;
-    //     image.onload = function(){
-    //         ctx.drawImage(image, 0, 0)
-    //     }
-    // })
-
-	// socket.on('moving', function (data) {
-    //     // not current user and new? create a cursor
-	// 	if(id !== data.id && !(data.id in clients)){
-	// 		cursors[data.id] = jQuery('.cursor').appendTo('#cursors');
-
-    //         // Move the mouse pointer
-    //         cursors[data.id].css({
-    //             'left' : data.x,
-    //             'top' : data.y
-    //         });
-	// 	}
-
-	// 	// Is the user drawing?
-	// 	if(data.drawing && clients[data.id]){
-    //         draw(clients[data.id], data, data.color, data.lineWidth);
-	// 	}
-
-	// 	// Save the last data state
-    //     clients[data.id] = data;
-    // });
     
     function onMoving(data) {
         if(id !== data.id && !(data.id in clients)){
@@ -201,22 +164,6 @@ $(function(){
         mode = draw_mode.val();
     });
 
-    // //save
-    // save_btn.on('click', function() {
-    //     var saveData = canvas[0].toDataURL();
-
-    //     fetch('/save', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //           },
-    //         body: JSON.stringify({data: saveData})
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => console.log(data))
-    //     alert('Saved successfully');
-    // })
-
     inc_btn.on('click', function() {
         ctx.canvas.height += 1200;
 
@@ -266,6 +213,10 @@ $(function(){
                 ctx.drawImage(img,0,0); 
             };
         });
+    });
+
+    peer.on('error', function(err) {
+        console.log(err);
     });
 
     socket.on('elseDrawing', (data) => {

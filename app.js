@@ -36,6 +36,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('join-room', (board_id, user_id) => {
         console.log('someone joined the room');
         socket.join(board_id);
+        console.log(io.sockets.adapter.rooms[board_id].length);
         if(io.sockets.adapter.rooms[board_id].length == 1){
             io.in(board_id).emit('stop-loader');
         }
@@ -48,7 +49,6 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('check-count', (board_id) => {
         if(io.sockets.adapter.rooms[board_id]){
-            console.log(io.sockets.adapter.rooms[board_id]);
             socket.emit('set-count', io.sockets.adapter.rooms[board_id].length);
         }
     })

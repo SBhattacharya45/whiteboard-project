@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Etch a Sketch</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/show.css">
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+        <style>
+            body {
+                background: #56ab2f;
+                background: -webkit-linear-gradient(to top, #56ab2f, #88b94b); 
+                background: linear-gradient(to top, #56ab2f, #88b94b); 
+            }
+            #jumbo {
+                background-color: #343a40;
+                color: #eee;
+            }
+            a {
+                color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-5" style="align-items: center;">
+            <div id="jumbo" class="jumbotron" style="text-align: center;">
+                <h1 class="display-4 mb-3" style="font-family: 'Teko', sans-serif;">Etch a Sketch</h1>
+                <p class="lead">
+                    This a collaborative whiteboard where you can draw together with friends by joining the same room. 
+                </p>
+                <a class="btn btn-success mb-4 mt-3" href="/<%= boardId %>" role="button">Create Your Board</a>
+                <hr class="my-4">
+                Contact Me:&nbsp;<a href="https://www.linkedin.com/in/soumyadeep-bhattacharya-65b74b170/">LinkedIn</a>&nbsp;|&nbsp;<a href="https://github.com/SBhattacharya45">Github</a>
+            </div>
+        </div>
+    </body>
+</html>

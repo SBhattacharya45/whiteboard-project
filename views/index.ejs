@@ -3,7 +3,7 @@
     <head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-		<title>Node.js Whiteboard</title>
+		<title>Board</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 		<link rel="stylesheet" href="/css/styles.css"/>
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
     
     <body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand mr-4" href="#">Whiteboard</a>
+			<a class="navbar-brand mr-4" href="#">Etch a Sketch</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
@@ -75,13 +75,19 @@
 				<li class=" mt-2 mr-3">
 					<p>Online Users: <span id="user_count">1</span></p>
 				</li>
-				<li class=" mt-1 mr-3">
-					<!-- AddToAny BEGIN -->
-					<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-						<a class="a2a_button_copy_link"></a>
+				<li class=" mr-3">
+					<div class="d-flex justify-content-around">
+						<div class="mt-2">
+							Share:&nbsp; 
 						</div>
-					<script async src="https://static.addtoany.com/menu/page.js"></script>
-					<!-- AddToAny END -->
+						<!-- AddToAny BEGIN -->
+						<div class="a2a_kit a2a_kit_size_32 a2a_default_style mt-1">
+							<a class="a2a_button_copy_link"></a>
+						</div>
+						<script async src="https://static.addtoany.com/menu/page.js"></script>
+						<!-- AddToAny END -->
+					</div>
+
 				</li>
 			</div>
 		  </nav>

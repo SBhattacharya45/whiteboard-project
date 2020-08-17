@@ -19,7 +19,9 @@ app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-    res.redirect(`/${uuidv4()}`);
+    board_id = `${uuidv4()}`;
+    console.log(board_id);
+    res.render('home', {boardId: board_id});
 })
 
 app.get('/:boardId', function (req, res) {

@@ -212,6 +212,7 @@ $(function(){
 
     socket.on('check-user-count', () => {
         socket.emit('check-count', BOARD_ID);
+        console.log('check-user-count');
     })
 
     socket.on('set-count', (count) => {

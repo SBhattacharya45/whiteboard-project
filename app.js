@@ -48,6 +48,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('check-count', (board_id) => {
         if(io.sockets.adapter.rooms[board_id]){
+            console.log(io.sockets.adapter.rooms[board_id]);
             socket.emit('set-count', io.sockets.adapter.rooms[board_id].length);
         }
     })

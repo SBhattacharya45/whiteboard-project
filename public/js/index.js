@@ -175,14 +175,14 @@ $(function(){
         socket.emit('join-room', BOARD_ID, id);
     })
 
-    socket.on('stop-loader', () => {
-        document.getElementById('loader').style.display = 'none';
-    })
+    // socket.on('stop-loader', () => {
+    //     document.getElementById('loader').style.display = 'none';
+    // })
 
     socket.on('joined-room', (id) => {
-        console.log('User ' + id + " has joined the room");
-        users = users + 1;
-        document.getElementById('user_count').innerHTML = users;
+        // console.log('User ' + id + " has joined the room");
+        // users = users + 1;
+        // document.getElementById('user_count').innerHTML = users;
         var conn = peer.connect(id);
         conn.on('open', function(){
             conn.send(canvas[0].toDataURL());

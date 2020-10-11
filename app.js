@@ -37,9 +37,9 @@ io.sockets.on('connection', function (socket) {
         console.log('someone joined the room');
         socket.join(board_id);
         console.log(io.sockets.adapter.rooms[board_id].length);
-        if(io.sockets.adapter.rooms[board_id].length == 1){
-            io.in(board_id).emit('stop-loader');
-        }
+        // if(io.sockets.adapter.rooms[board_id].length == 1){
+        //     io.in(board_id).emit('stop-loader');
+        // }
         socket.to(board_id).broadcast.emit('joined-room', user_id);
     });
 
